@@ -1,0 +1,149 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.learn.sai.demo
+
+/**
+
+Base class declarations
+
+*/
+abstract participant Manufacturer identified by manufacturerId {
+  o String manufacturerId
+  o String companyName
+  o String companyLocation
+  o String companyRegistrationId
+  o String companyRevenue optional
+  o Address address
+}
+
+participant Vendor extends Manufacturer{
+  o String specialities
+  o DateTime estdDate
+  o Boolean currentState
+  
+}
+
+participant GoodsSupplier extends Manufacturer{
+  o String specialities
+  o DateTime estdDate
+  o Boolean currentState
+
+  
+}
+
+participant FinalProductMaker extends Manufacturer{
+  o String specialities
+  o String additionalInfo
+  o String makeingPhase optional
+  --> Vendor vendorDetails
+  o String currentAssignment
+  
+}
+
+concept Address {
+  o String street
+  o String city default ="Bangalore"
+  o String country default = "India"
+}
+
+asset Campaign identified by campaignId {
+  o String campaignId
+  --> Vendor vendorDetails
+  --> Material productData
+
+}
+
+asset Material identified by materialId{
+    o String materialId
+    o MaterialType rawForm
+    o String USNNumber
+    --> GoodsSupplier rawMaterialSupplier
+    o Boolean intermediateMaterial
+    o Steps[] productionProcess
+
+}
+asset IntermediateMaterial identified by intermediateMaterialId{
+    o String intermediateMaterialId
+    o Steps[] procedure
+}
+
+concept Steps{
+  o String initialInput
+  o String inputState
+  o String inputUSNNumber
+  o String finalOutput
+  o String outputState
+  o String outputUSNNumber
+  o Integer processTime
+  o Integer stepNumber
+  --> Vendor vendorDetails  
+}
+
+concept Input2output{
+  
+  o String initialInput
+  o String inputState
+  o Integer processTime
+  o String finalOutput
+  o String outputState
+}
+
+transaction ApplyStep {
+  --> Material inputMaterial
+  o Material newMaterial
+  o Boolean intermediateMaterialExists
+  o String outputUSNNumber
+}
+
+event MaterialAddedEvent {
+  o Material interMaterial
+}
+
+/**
+ * An enumerated material type
+ */
+enum MaterialType {
+  o Liquid
+  o Solid
+}
+
+
+
+participant SampleParticipant identified by participantId {
+  o String participantId
+  o String firstName
+  o String lastName
+}
+
+asset SampleAsset identified by assetId {
+  o String assetId
+  --> SampleParticipant owner
+  o String value
+}
+
+transaction SampleTransaction {
+  --> SampleAsset asset
+  o String newValue
+}
+
+event SampleEvent {
+  --> SampleAsset asset
+  o String oldValue
+  o String newValue
+}
