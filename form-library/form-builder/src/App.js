@@ -141,14 +141,14 @@ const MyCustomWidget = (props) => {
           <Select
             multiple
             value={props.name}
-            onChange={this.handleChange}
+            onChange={props.handleChange}
             input={<Input id="select-multiple-checkbox" />}
             renderValue={selected => selected.join(', ')}
             MenuProps={this.MenuProps}
           >
             {names.map(name => (
               <MenuItem key={name} value={name}>
-                <Checkbox checked={this.names.indexOf(name) > -1} />
+                <Checkbox checked={props.state.name.indexOf(name) > -1} />
                 <ListItemText primary={name} />
               </MenuItem>
             ))}
@@ -160,7 +160,7 @@ const MyCustomWidget = (props) => {
 };
 
 const widgets = {
-  'MyCustomWidget': this.MyCustomWidget
+  'MyCustomWidget': MyCustomWidget
 };
 
 const log = (type) => console.log.bind(console, type);
@@ -198,7 +198,9 @@ class App extends Component {
           </div>
           <p>Custome one</p>
 
-          <MyCustomWidget name={this.state.name} state={this.state}/> 
+          Selected values : {this.state.name}
+
+          <MyCustomWidget name={this.state.name} state={this.state} handleChange={this.handleChange} /> 
       </div>
       </MuiThemeProvider>
     );
