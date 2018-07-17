@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width" />
+      <title>Upload demo</title>
+      <link rel="stylesheet" href="css/style.css" />
+   </head>
+   <body>
+      <h1>Upload files</h1>
+
+      <form action="/" method="POST">
+         <label for="file">Select file:</label>
+         <input name="file" id="file" type="file"/>
+         <label for="commit-title">User Id:</label>
+         <input id="commit-title" name="commit-title" type="text" />
+         <input type="submit" />
+      </form> 
+      <div id="git_form_upload_url">
+      </div>
+      <script src="dist.js" defer async></script>
+   </body>
+</html>
